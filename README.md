@@ -1,4 +1,7 @@
 # RefreshSwitcher
+
+![RefreshSwitcher switching from 60 Hz to 240 Hz when a game starts](demo.gif)
+
 Automatic refresh rate switching for Windows. Low Hz on the desktop, full Hz in games, battery-friendly Hz when unplugged. Per-monitor rates, automatic game detection for Steam, Epic, GOG and Xbox, safe switching with rollback. Works without VRR or Windows DRR. 
 
 High refresh rate monitors run at full speed all the time, even when you are just reading a web page. That costs power and, on some GPUs, keeps the graphics memory clocked up at idle. RefreshSwitcher lowers the refresh rate while you work and switches back to full speed the moment a game starts.
