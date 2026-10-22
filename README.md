@@ -5,6 +5,11 @@ High refresh rate monitors run at full speed all the time, even when you are jus
 
 It works with fixed refresh rates, so it also helps where Windows Dynamic Refresh Rate (DRR) or VRR does not: for example when DRR causes stutter or frame pacing issues, or when your GPU stays at high idle power despite FreeSync/G-Sync.
 
+### Known limitations
+- Tested on a limited set of hardware so far. Feedback from Nvidia, Intel and multi-monitor setups is very welcome.
+- Switching after fullscreen detection happens while the game is already running and causes a short black screen.
+- Translations other than English and German have not been reviewed by native speakers yet.
+
 # Features
 Per-monitor rates: set a desktop rate and a game rate for each connected monitor
 Automatic game detection
