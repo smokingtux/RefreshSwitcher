@@ -8,6 +8,8 @@ High refresh rate monitors run at full speed all the time, even when you are jus
 
 It works with fixed refresh rates, so it also helps where Windows Dynamic Refresh Rate (DRR) or VRR does not: for example when DRR causes stutter or frame pacing issues, or when your GPU stays at high idle power despite FreeSync/G-Sync.
 
+![GPU power at idle: 89 W at 240 Hz, 24 W at 60 Hz with RefreshSwitcher](GPU_demo.gif)
+
 ### Known limitations
 - Tested on a limited set of hardware so far. Feedback from Nvidia, Intel and multi-monitor setups is very welcome.
 - Switching after fullscreen detection happens while the game is already running and causes a short black screen.
