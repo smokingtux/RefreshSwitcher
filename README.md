@@ -5,7 +5,7 @@ High refresh rate monitors run at full speed all the time, even when you are jus
 
 It works with fixed refresh rates, so it also helps where Windows Dynamic Refresh Rate (DRR) or VRR does not: for example when DRR causes stutter or frame pacing issues, or when your GPU stays at high idle power despite FreeSync/G-Sync.
 
-#Features
+# Features
 Per-monitor rates: set a desktop rate and a game rate for each connected monitor
 Automatic game detection
 games installed through Steam, Epic, GOG and the Xbox app are detected automatically by their install folder
@@ -29,7 +29,7 @@ The setup installs to C:\Program Files\RefreshSwitcher and can add a Start menu 
 
 Windows SmartScreen may warn about an unknown publisher because the setup is not code-signed. Choose More info → Run anyway.
 
-#How it works
+# How it works
 RefreshSwitcher checks every few seconds whether a game is running.
 Games from your list or from a game library switch immediately, usually before the game window appears.
 Fullscreen apps only count as a game after they stayed in fullscreen for a few seconds.
@@ -38,7 +38,7 @@ While a game runs in exclusive fullscreen with its own display mode, RefreshSwit
 
 Only refresh rates that your driver offers at the current resolution are used.
 
-#Privacy and security
+# Privacy and security
 No network access, no telemetry, no updates in the background
 Runs as a normal user, never asks for admin rights (only the installer does)
 Never starts other programs. The only exception is Open log, which opens the log file in Notepad
