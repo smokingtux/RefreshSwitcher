@@ -25,7 +25,11 @@ Safe switching: every change is verified after applying it. Failed monitors are 
 Diagnostics view and log file for troubleshooting
 Tray app with autostart option
 5 languages: English, Deutsch, Español, Français, Українська
+
 6 themes: Black, Ocean, Forest, Sunset, Graphite, Light
+
+![All six RefreshSwitcher themes](refreshswitcher-themes.gif)
+
 Requirements
 Windows 10 or 11
 .NET Framework 4.5 or newer (included in Windows 10 and 11)
