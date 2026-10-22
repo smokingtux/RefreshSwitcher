@@ -1,6 +1,6 @@
 ; =============================================================================
 ; RefreshSwitcher Setup
-; Version 1.8.0, October 2026
+; Version 1.8.1, October 2026
 ;
 ; Author:   SmokingTux
 ; Contact:  issues page of the RefreshSwitcher repository on GitHub
@@ -32,7 +32,7 @@ RequestExecutionLevel admin ; writing to Program Files and HKLM needs admin righ
 
 ; Names and paths used throughout the script
 !define APP        "RefreshSwitcher"
-!define VERSION    "1.8.0"
+!define VERSION    "1.8.1"
 !define PUBLISHER  "SmokingTux"
 !define EXE        "RefreshSwitcher.exe"
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP}"   ; "Apps & Features" entry

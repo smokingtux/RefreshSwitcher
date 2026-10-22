@@ -1,0 +1,90 @@
+name: Release
+
+# Push a tag like v1.8.1 to build the app and the setup, run the tests and
+# create a draft GitHub Release with the setup attached. Check the draft on
+# the Releases page, then press "Publish release".
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CSC: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe
+    steps:
+      - uses: actions/checkout@v4
+
+      # The tag must match the version in RefreshSwitcher.cs and installer.nsi,
+      # otherwise the setup would be named and registered with the wrong version.
+      - name: Check version
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          "VERSION=$version" >> $env:GITHUB_ENV
+          $cs  = [regex]::Match((Get-Content -Raw RefreshSwitcher.cs), 'AssemblyFileVersion\("([0-9.]+)\.0"\)').Groups[1].Value
+          $nsi = [regex]::Match((Get-Content -Raw installer.nsi), '!define VERSION\s+"([0-9.]+)"').Groups[1].Value
+          Write-Host "Tag: $version, RefreshSwitcher.cs: $cs, installer.nsi: $nsi"
+          if ($cs -ne $version -or $nsi -ne $version) {
+            Write-Error "Tag version $version does not match RefreshSwitcher.cs ($cs) and installer.nsi ($nsi)"
+            exit 1
+          }
+
+      - name: Prepare build folder
+        run: |
+          New-Item -ItemType Directory -Force build | Out-Null
+          Copy-Item RefreshSwitcher.cs, Tests.cs, installer.nsi, app.ico, header.bmp, wizard.bmp build
+
+      - name: Build app
+        working-directory: build
+        run: |
+          & $env:CSC /nologo /target:winexe /optimize /win32icon:app.ico /out:RefreshSwitcher.exe RefreshSwitcher.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build tests
+        working-directory: build
+        run: |
+          & $env:CSC /nologo /main:RefreshSwitcher.Tests /out:Tests.exe RefreshSwitcher.cs Tests.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      # Tests.exe exits with 1 if any check failed.
+      - name: Run tests
+        working-directory: build
+        run: |
+          ./Tests.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      # NSIS is not part of every Windows runner image, install it if needed.
+      - name: Build setup
+        working-directory: build
+        run: |
+          $makensis = (Get-Command makensis -ErrorAction SilentlyContinue).Source
+          if (-not $makensis) {
+            choco install nsis -y --no-progress
+            $makensis = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
+          }
+          & $makensis /V2 installer.nsi
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Create draft release
+        working-directory: build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $setup = "RefreshSwitcher-Setup-$env:VERSION.exe"
+          $hash  = (Get-FileHash $setup -Algorithm SHA256).Hash.ToLower()
+          @"
+          ## RefreshSwitcher $env:VERSION
+
+          ### Installation
+          Download ``$setup`` below and run it. The setup is not code-signed, so Windows SmartScreen may show a warning: choose *More info → Run anyway*.
+
+          ### Checksum
+          SHA-256: ``$hash``
+          "@ | Set-Content -Encoding utf8 notes.md
+          gh release create "${{ github.ref_name }}" $setup --draft --title "RefreshSwitcher-Setup-$env:VERSION" --notes-file notes.md --generate-notes --verify-tag

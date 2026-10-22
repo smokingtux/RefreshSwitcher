@@ -1,6 +1,6 @@
 // =============================================================================
 // RefreshSwitcher
-// Version 1.8.0, October 2026
+// Version 1.8.1, October 2026
 //
 // Author:   SmokingTux
 // Contact:  issues page of the RefreshSwitcher repository on GitHub
@@ -63,10 +63,10 @@ using Microsoft.Win32;              // registry (autostart, Steam/GOG paths), po
 [assembly: System.Reflection.AssemblyCompany("SmokingTux")]
 [assembly: System.Reflection.AssemblyCopyright("© 2026 SmokingTux")]
 [assembly: System.Reflection.AssemblyDescription("Automatically switches monitors between desktop and game refresh rates")]
-[assembly: System.Reflection.AssemblyVersion("1.8.0.0")]
+[assembly: System.Reflection.AssemblyVersion("1.8.1.0")]
 // Load native DLLs only from System32, never from the folder next to the exe (prevents DLL hijacking).
 [assembly: DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-[assembly: System.Reflection.AssemblyFileVersion("1.8.0.0")]
+[assembly: System.Reflection.AssemblyFileVersion("1.8.1.0")]
 
 namespace RefreshSwitcher
 {
