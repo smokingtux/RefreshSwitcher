@@ -65,8 +65,7 @@ Tests.exe
 makensis installer.nsi
 
 
-# License 
-Copyright © 2026 SmokingTux
+
 RefreshSwitcher is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0 or any later version. See LICENSE for the full text.
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ---
