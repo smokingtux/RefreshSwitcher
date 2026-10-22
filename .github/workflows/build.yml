@@ -39,12 +39,12 @@ jobs:
           & $env:CSC /nologo /main:RefreshSwitcher.Tests /out:Tests.exe RefreshSwitcher.cs Tests.cs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      # Tests.exe returns the number of failed checks as exit code.
+      # Tests.exe exits with 1 if any check failed.
       - name: Run tests
         working-directory: build/RefreshSwitcher
         run: |
           ./Tests.exe
-          if ($LASTEXITCODE -ne 0) { Write-Error "$LASTEXITCODE test(s) failed"; exit $LASTEXITCODE }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - uses: actions/upload-artifact@v4
         with:
