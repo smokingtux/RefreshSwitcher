@@ -17,9 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The source lives in the release zip, so unpack it first.
-      - name: Unpack source
-        run: Expand-Archive -Path RefreshSwitcher-*-source.zip -DestinationPath build
+      # Use the source files in the repo root if they are there, otherwise unpack the source zip.
+      - name: Prepare source
+        run: |
+          if (Test-Path RefreshSwitcher.cs) {
+            New-Item -ItemType Directory -Force build/RefreshSwitcher | Out-Null
+            Copy-Item RefreshSwitcher.cs, Tests.cs, app.ico build/RefreshSwitcher
+          } else {
+            Expand-Archive -Path RefreshSwitcher-*-source.zip -DestinationPath build
+          }
 
       - name: Build app
         working-directory: build/RefreshSwitcher
