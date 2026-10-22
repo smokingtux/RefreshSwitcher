@@ -1,0 +1,46 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CSC: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe
+    steps:
+      - uses: actions/checkout@v4
+
+      # The source lives in the release zip, so unpack it first.
+      - name: Unpack source
+        run: Expand-Archive -Path RefreshSwitcher-*-source.zip -DestinationPath build
+
+      - name: Build app
+        working-directory: build/RefreshSwitcher
+        run: |
+          & $env:CSC /nologo /target:winexe /optimize /win32icon:app.ico /out:RefreshSwitcher.exe RefreshSwitcher.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build tests
+        working-directory: build/RefreshSwitcher
+        run: |
+          & $env:CSC /nologo /main:RefreshSwitcher.Tests /out:Tests.exe RefreshSwitcher.cs Tests.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      # Tests.exe returns the number of failed checks as exit code.
+      - name: Run tests
+        working-directory: build/RefreshSwitcher
+        run: |
+          ./Tests.exe
+          if ($LASTEXITCODE -ne 0) { Write-Error "$LASTEXITCODE test(s) failed"; exit $LASTEXITCODE }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RefreshSwitcher
+          path: build/RefreshSwitcher/RefreshSwitcher.exe
